@@ -1,5 +1,9 @@
 #include <iostream>
+#include <random>
 #include "List.h"
+
+// Prototypes
+int coin_flip();
 
 namespace List_h {
     Link::Link(int v, Link *n) : val{ v }, next{ n } {}
@@ -30,17 +34,17 @@ namespace List_h {
         std::cout << std::endl;
     }
 
-    Slink_list::Slink_list() : head{ nullptr }, cur_p{ head } {}
+    Slink_list::Slink_list() : head{ nullptr }, end{ head } {}
 
     Slink_list::Slink_list(std::initializer_list<int> l) {
         auto it = l.begin();
 
         head = new Link{ *it++ };
-        cur_p = head;
+        end = head;
 
         while (it != l.end()) {
-            cur_p->insert(new Link{ *it });
-            cur_p = cur_p->next;
+            end->insert(new Link{ *it });
+            end = end->next;
             ++it;
         }
     }
@@ -57,11 +61,22 @@ namespace List_h {
 
         if (!head) {
             head = n;
-            cur_p = head;
+            end = head;
         }
         else {
-            cur_p->insert(n);
-            cur_p = cur_p->next;
+            end->insert(n);
+            end = end->next;
+        }
+    }
+
+    void Slink_list::push_back(int n) {
+        if (!head) {
+            head = new Link{ n };
+            end = head;
+        }
+        else {
+            end->next = new Link{ n };
+            end = end->next;
         }
     }
 
@@ -77,7 +92,32 @@ namespace List_h {
         }
 
         head = nullptr;
-        cur_p = nullptr;
+        end = nullptr;
+    }
+    
+    Skip_list::Skip_list(std::initializer_list<int> l) {
+        size_t level = 0;
+
+        lvls[level] = new Slink_list;
+        // fill zero level
+        for (auto it = l.begin(); it != l.end(); ++it) {
+            lvls[level]->push_back(*it);
+        }
+        
+        // fill randomly levels [1 ... max_lvl)
+        while (++level != max_lvl) {
+            int pos = 0;
+        }
     }
 
+
+
+}
+
+int coin_flip()
+{   
+    std::random_device rd;
+    std::uniform_int_distribution<int> dist{ 0, 1 };
+
+    return dist(rd);
 }
