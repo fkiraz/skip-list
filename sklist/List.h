@@ -31,6 +31,8 @@ namespace List_h {
 
         void insert(Skip_node *n);
 
+        ~Skip_node();
+
         int val;
         size_t levels;
         Skip_node **next;
@@ -46,14 +48,19 @@ namespace List_h {
         const Skip_node *get_head() const;
         Skip_node &get_head();
 
+        void insert(int key, int new_val);
+
         bool search(int key);
 
         void display() const;
+
+        ~Skip_list();
     private:
         Skip_node *head;
         Skip_node *end;
     };
 
+    size_t random_lvl();
     void print_link(const Link *l);
 
 } // List_h

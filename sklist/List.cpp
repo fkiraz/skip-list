@@ -18,20 +18,6 @@ namespace List_h
         }
     }
 
-    void print_link(const Link *l) {
-        const Link *p = l;
-
-        while (p) {
-            std::cout << p->val;
-            if (p->next) {
-                std::cout << " -> ";
-            }
-
-            p = p->next;
-        }
-        std::cout << std::endl;
-    }
-
     Slink_list::Slink_list() : head{nullptr}, end{head} {}
 
     Slink_list::Slink_list(std::initializer_list<int> l) {
@@ -113,6 +99,11 @@ namespace List_h
         }
     }
 
+    Skip_node::~Skip_node() {
+        delete[] next;
+        delete[] prev;
+    }
+
     Skip_list::Skip_list() : head{new Skip_node(std::numeric_limits<int>::min(), max_lvl)}, end{new Skip_node(std::numeric_limits<int>::max(), max_lvl)} {
         for (size_t i = 0; i < max_lvl; ++i) {
             head->next[i] = end;
@@ -127,6 +118,39 @@ namespace List_h
     Skip_node &Skip_list::get_head() {
         return *head;
     }
+
+    void Skip_list::insert(int key, int new_val) {
+        Skip_node *update[max_lvl];
+        Skip_node *x = head;
+
+        for (auto i = max_lvl - 1; i != static_cast<size_t> (-1); --i) {
+            while (x->next[i]->val < key) {
+                x = x->next[i];
+            }
+
+            update[i] = x;
+        }
+
+        x = x->next[0];
+
+        if (x->val == key) {
+            x->val = new_val;
+        }
+        else {
+            size_t new_lvl = random_lvl();
+            Skip_node *n = new Skip_node{new_val, new_lvl};
+
+            for (auto i = 0; i < new_lvl; ++i) {
+                n->next[i] = update[i]->next[i];
+                n->prev[i] = update[i];
+                update[i]->next[i]->prev[i] = n;
+                update[i]->next[i] = n;
+            }
+        }
+    }
+
+    /*void Skip_list::push_back(int v) {
+    }*/
 
     bool Skip_list::search(int key) {
         const Skip_node *x = head;
@@ -155,6 +179,35 @@ namespace List_h
 
             std::cout << std::endl;
         }
+    }
+
+    Skip_list::~Skip_list() {
+        delete head;
+        delete end;
+    }
+
+    size_t random_lvl() {
+        size_t lvl = 1;
+
+        while (lvl < Skip_list::max_lvl && coin_flip()) {
+            ++lvl;
+        }
+
+        return lvl;
+    }
+
+    void print_link(const Link *l) {
+        const Link *p = l;
+
+        while (p) {
+            std::cout << p->val;
+            if (p->next) {
+                std::cout << " -> ";
+            }
+
+            p = p->next;
+        }
+        std::cout << std::endl;
     }
 }
 
