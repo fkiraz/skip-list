@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <initializer_list>
 
 namespace List_h {
@@ -47,7 +48,7 @@ namespace List_h {
         Skip_node &get_head();
 
         void push_back(int v);
-
+        void push_back(Skip_node *n);
 
         void insert(int key, int new_val);
 
@@ -57,6 +58,8 @@ namespace List_h {
 
         ~Skip_list();
     private:
+        void Skip_list::end_prepend(Skip_node *n, int lvl);
+
         Skip_node *head;
         Skip_node *end;
     };

@@ -135,16 +135,30 @@ namespace List_h
         }
     }
 
+    void Skip_list::end_prepend(Skip_node *n, int lvl) {
+        for (auto i = 0; i < lvl; ++i) {
+            n->next[i] = end;
+            n->prev[i] = end->prev[i];
+            end->prev[i]->next[i] = n;
+            end->prev[i] = n;
+        }
+    }
+
     void Skip_list::push_back(int v) {
         if (!search(v)) {
             size_t new_lvl = random_lvl();
             Skip_node *n = new Skip_node{v, new_lvl};
 
-            for (auto i = 0; i < new_lvl; ++i) {
-                n->next[i] = end;
-                n->prev[i] = end->prev[i];
-                end->prev[i]->next[i] = n;
-                end->prev[i] = n;
+            end_prepend(n, new_lvl);
+        }
+    }
+
+    void Skip_list::push_back(Skip_node * n) {
+        if (n) {
+            if (!search(n->val)) {
+                size_t lvl = std::min(n->levels, max_lvl);
+
+                end_prepend(n, lvl);
             }
         }
     }
