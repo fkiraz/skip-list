@@ -85,20 +85,6 @@ namespace List_h
         }
     }
 
-    void Skip_node::insert(Skip_node *n) {
-        if (n) {
-            for (size_t i = 0; i < n->levels; ++i) {
-                if (next[i]) {
-                    n->next[i] = next[i];
-                    next[i]->prev[i] = n;
-                }
-
-                n->prev[i] = this;
-                next[i] = n;
-            }
-        }
-    }
-
     Skip_node::~Skip_node() {
         delete[] next;
         delete[] prev;

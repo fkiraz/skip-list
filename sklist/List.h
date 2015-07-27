@@ -29,8 +29,6 @@ namespace List_h {
     struct Skip_node {
         Skip_node(int v, size_t levels);
 
-        void insert(Skip_node *n);
-
         ~Skip_node();
 
         int val;
@@ -49,6 +47,8 @@ namespace List_h {
         Skip_node &get_head();
 
         void push_back(int v);
+
+
         void insert(int key, int new_val);
 
         bool search(int key);
