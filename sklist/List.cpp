@@ -149,8 +149,19 @@ namespace List_h
         }
     }
 
-    /*void Skip_list::push_back(int v) {
-    }*/
+    void Skip_list::push_back(int v) {
+        if (!search(v)) {
+            size_t new_lvl = random_lvl();
+            Skip_node *n = new Skip_node{v, new_lvl};
+
+            for (auto i = 0; i < new_lvl; ++i) {
+                n->next[i] = end;
+                n->prev[i] = end->prev[i];
+                end->prev[i]->next[i] = n;
+                end->prev[i] = n;
+            }
+        }
+    }
 
     bool Skip_list::search(int key) {
         const Skip_node *x = head;

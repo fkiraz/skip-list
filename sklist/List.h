@@ -48,6 +48,7 @@ namespace List_h {
         const Skip_node *get_head() const;
         Skip_node &get_head();
 
+        void push_back(int v);
         void insert(int key, int new_val);
 
         bool search(int key);
