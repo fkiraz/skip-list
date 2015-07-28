@@ -135,6 +135,31 @@ namespace List_h
         }
     }
 
+    void Skip_list::delete_node(int key) {
+        Skip_node *update[max_lvl];
+        Skip_node *x = head;
+
+        for (auto i = max_lvl - 1; i >= 0 && i < max_lvl; --i) {
+            while (x->next[i]->val < key) {
+                x = x->next[i];
+            }
+            update[i] = x;
+        }
+
+        x = x->next[0];
+
+        if (x->val == key) {
+            for (auto i = 0; i < max_lvl; ++i) {
+                if (update[i]->next[i] != x) {
+                    break;
+                }
+                update[i]->next[i] = x->next[i];
+            }
+
+            delete x;
+        }
+    }
+
     void Skip_list::clear() {
         Skip_node *p = head->next[0];
 

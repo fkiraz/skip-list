@@ -67,6 +67,7 @@ namespace List_h
         void push_front(Skip_node * const n);
 
         void insert(int key, int new_val);
+        void delete_node(int key);
 
         bool search(int key);
 
