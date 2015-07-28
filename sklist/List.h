@@ -48,9 +48,10 @@ namespace List_h {
         Skip_node &get_head();
 
         void push_back(int v);
-        void push_back(Skip_node *n);
+        void push_back(Skip_node *const n);
+
         void push_front(int v);
-        void push_front(Skip_node *n);
+        void push_front(Skip_node * const n);
 
         void insert(int key, int new_val);
 
@@ -60,8 +61,9 @@ namespace List_h {
 
         ~Skip_list();
     private:
-        void end_prepend(Skip_node *n, size_t lvl);
-        void head_append(Skip_node *n, size_t lvl);
+        void clear();
+        void end_prepend(Skip_node * const n, size_t lvl);
+        void head_append(Skip_node * const n, size_t lvl);
 
         Skip_node *head;
         Skip_node *end;

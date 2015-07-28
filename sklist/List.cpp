@@ -135,7 +135,19 @@ namespace List_h
         }
     }
 
-    void Skip_list::end_prepend(Skip_node *n, size_t lvl) {
+    void Skip_list::clear() {
+        Skip_node *p = head->next[0];
+
+        while (p != end) {
+            Skip_node *t = p->next[0];
+
+            delete p;
+            
+            p = t;
+        }
+    }
+
+    void Skip_list::end_prepend(Skip_node * const n, size_t lvl) {
         for (auto i = 0; i < lvl; ++i) {
             n->next[i] = end;
             n->prev[i] = end->prev[i];
@@ -144,7 +156,7 @@ namespace List_h
         }
     }
 
-    void Skip_list::head_append(Skip_node *n, size_t lvl) {
+    void Skip_list::head_append(Skip_node * const n, size_t lvl) {
         for (auto i = 0; i < lvl; ++i) {
             n->prev[i] = head;
             n->next[i] = head->next[i];
@@ -181,7 +193,7 @@ namespace List_h
         }
     }
 
-    void Skip_list::push_front(Skip_node * n) {
+    void Skip_list::push_front(Skip_node * const n) {
         if (n) {
             if (!search(n->val)) {
                 size_t lvl = std::min(n->levels, max_lvl);
@@ -221,6 +233,8 @@ namespace List_h
     }
 
     Skip_list::~Skip_list() {
+        clear();
+
         delete head;
         delete end;
     }
