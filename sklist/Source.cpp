@@ -1,4 +1,9 @@
+#include <vector>
+#include <initializer_list>
+#include <algorithm>
+#include <random>
 #include <iostream>
+#include <ctime>
 #include "List.h"
 
 using namespace std;
@@ -15,36 +20,48 @@ void foo() {
 }
 
 int main() {
+    constexpr int border = 8000000;
     Skip_list sl;
-    
-    sl.push_back(3);
-    sl.push_back(6);
-    sl.push_back(7);
-    sl.push_back(9);
-    sl.push_back(12);
-    sl.push_back(17);
-    sl.push_back(19);
-    sl.push_back(25);
-    sl.push_back(26);
+    Slink_list sll;    
 
-    sl.insert(40, 40);
-    sl.push_front(1);
-
-    sl.delete_node(1);
-    sl.delete_node(17);
-
-    sl.display();
+    for (auto i = 0; i < border; ++i) {
+        sl.push_back(i);
+        sll.push_back(i);
+    }
 
     int val;
 
     std::cout << "Please enter a number to search: ";
-    std::cin >> val;
+    while (std::cin >> val) {
 
-    if (sl.search(val)) {
-        std::cout << val << " was found" << std::endl;
-    }
-    else {
-        std::cout << val << " was not found" << std::endl;
+        clock_t t;
+
+        t = clock();
+
+        /*if (sl.search(val)) {
+            std::cout << val << " was found" << std::endl;
+        }
+        else {
+            std::cout << val << " was not found" << std::endl;
+        }*/
+
+        bool vt = sl.search(val);
+
+        t = clock() - t;
+
+        std::cout << "Search in the skip list took me " << t << " cycles (" << static_cast<float> (t) / CLOCKS_PER_SEC << " seconds).\n";
+
+        t = clock();
+
+        const Link *p = sll.find(val);
+
+        t = clock() - t;
+
+        std::cout << "Search in the singly linked list took me " << t << " cycles (" << static_cast<float> (t) / CLOCKS_PER_SEC << " seconds).\n";
+
+        if (vt) {
+            std::cout << "Value " << p->val << " was found\n";
+        }
     }
 
     return 0;
