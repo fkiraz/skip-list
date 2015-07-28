@@ -109,7 +109,7 @@ namespace List_h
         Skip_node *update[max_lvl];
         Skip_node *x = head;
 
-        for (auto i = max_lvl - 1; i != static_cast<size_t> (-1); --i) {
+        for (auto i = max_lvl - 1; i >= 0 && i < max_lvl; --i) {
             while (x->next[i]->val < key) {
                 x = x->next[i];
             }
@@ -142,7 +142,7 @@ namespace List_h
             Skip_node *t = p->next[0];
 
             delete p;
-            
+
             p = t;
         }
     }
@@ -206,7 +206,7 @@ namespace List_h
     bool Skip_list::search(int key) {
         const Skip_node *x = head;
 
-        for (auto i = max_lvl - 1; i != static_cast<size_t> (-1); --i) {
+        for (auto i = max_lvl - 1; i >= 0 && i < max_lvl; --i) {
             while (x->next[i]->val < key) {
                 x = x->next[i];
             }
@@ -216,7 +216,7 @@ namespace List_h
     }
 
     void Skip_list::display() const {
-        for (auto i = max_lvl - 1; i != static_cast<size_t> (-1); --i) {
+        for (auto i = max_lvl - 1; i >= 0 && i < max_lvl; --i) {
             const Skip_node *p = head;
 
             while (p) {

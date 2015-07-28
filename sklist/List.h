@@ -3,18 +3,23 @@
 #include <algorithm>
 #include <initializer_list>
 
-namespace List_h {
+namespace List_h
+{
+    // Node class for a linked list
     struct Link {
         Link(int v, Link *n = nullptr);
 
+        // Inserting nn after current node
         void insert(Link *nn);
 
         int val;
         Link *next;
     };
 
+    // Singly linked list class
     struct Slink_list {
         Slink_list();
+        // Create linked list by passing a list of values like {1,2,3} : 1 -> 2 -> 3
         Slink_list(std::initializer_list<int> l);
 
         const Link *get_head() const;
@@ -22,11 +27,18 @@ namespace List_h {
         void push_back(int n);
 
         ~Slink_list();
-     private:
+    private:
         Link *head;
         Link *end;
     };
 
+    // Skip node class for Skip list algorithm
+    // Each node has certain level and several pointers to neighbours
+    //               here
+    //         * <- <- | ->
+    //            * <- * -> -> -> *
+    //            * <-   -> *  ->
+    //
     struct Skip_node {
         Skip_node(int v, size_t levels);
 
@@ -38,6 +50,7 @@ namespace List_h {
         Skip_node **prev;
     };
 
+    // Skip list class
     struct Skip_list {
         // Max level of a skip list
         static constexpr size_t max_lvl = 32;
@@ -61,6 +74,7 @@ namespace List_h {
 
         ~Skip_list();
     private:
+        // Deleting all nodes from a list
         void clear();
         void end_prepend(Skip_node * const n, size_t lvl);
         void head_append(Skip_node * const n, size_t lvl);
@@ -69,7 +83,8 @@ namespace List_h {
         Skip_node *end;
     };
 
+    // Generating random level for Skip Nodes
     size_t random_lvl();
+    // Printing whole skip list
     void print_link(const Link *l);
-
 } // List_h
