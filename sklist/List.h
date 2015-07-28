@@ -23,6 +23,7 @@ namespace List_h
         Slink_list(std::initializer_list<int> l);
 
         const Link *get_head() const;
+        const Link *find(int key) const;
         void push_back(Link *n);
         void push_back(int n);
 
@@ -87,5 +88,5 @@ namespace List_h
     // Generating random level for Skip Nodes
     size_t random_lvl();
     // Printing whole skip list
-    void print_link(const Link *l);
+    void print_link(const Slink_list& l);
 } // List_h

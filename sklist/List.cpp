@@ -37,6 +37,18 @@ namespace List_h
         return head;
     }
 
+    const Link *Slink_list::find(int key) const {
+        const Link *x = head;
+
+        if (head) {
+            while (x != nullptr && x->val < key) {
+                x = x->next;
+            }
+        }
+
+        return (x && x->val == key) ? x : nullptr;
+    }
+
     void Slink_list::push_back(Link * n) {
         if (!n) {
             return;
@@ -274,8 +286,8 @@ namespace List_h
         return lvl;
     }
 
-    void print_link(const Link *l) {
-        const Link *p = l;
+    void print_link(const Slink_list& l) {
+        const Link *p = l.get_head();
 
         while (p) {
             std::cout << p->val;
