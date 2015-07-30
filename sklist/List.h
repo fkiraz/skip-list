@@ -40,11 +40,11 @@ namespace List_h
         Slink_list(std::initializer_list<int> l) {
             auto it = l.begin();
 
-            head = new Link{*it++};
+            head = new Link<T>{*it++};
             end = head;
 
             while (it != l.end()) {
-                end->insert(new Link{*it});
+                end->insert(new Link<T>{*it});
                 end = end->next;
                 ++it;
             }
