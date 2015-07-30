@@ -1,36 +1,113 @@
 #pragma once
 
+#include <random>
 #include <algorithm>
 #include <initializer_list>
 
 namespace List_h
 {
+    inline int coin_flip() {
+        std::random_device rd;
+        std::uniform_int_distribution<int> dist{0, 1};
+
+        return dist(rd);
+    }
+
     // Node class for a linked list
+    template <typename T>
     struct Link {
-        Link(int v, Link *n = nullptr);
+        Link(T v, Link *n = nullptr) : val{v}, next{n} {};
 
         // Inserting nn after current node
-        void insert(Link *nn);
+        void insert(Link *nn) {
+            if (nn) {
+                Link *tmp = next;
 
-        int val;
+                next = nn;
+                nn->next = tmp;
+            }
+        }
+
+        T val;
         Link *next;
     };
 
     // Singly linked list class
+    template <typename T>
     struct Slink_list {
-        Slink_list();
+        Slink_list() : head{nullptr}, end{head} {};
         // Create linked list by passing a list of values like {1,2,3} : 1 -> 2 -> 3
-        Slink_list(std::initializer_list<int> l);
+        Slink_list(std::initializer_list<int> l) {
+            auto it = l.begin();
 
-        const Link *get_head() const;
-        const Link *find(int key) const;
-        void push_back(Link *n);
-        void push_back(int n);
+            head = new Link{*it++};
+            end = head;
 
-        ~Slink_list();
+            while (it != l.end()) {
+                end->insert(new Link{*it});
+                end = end->next;
+                ++it;
+            }
+        }
+
+        const Link<T> *get_head() const {
+            return head;
+        }
+
+        const Link<T> *find(int key) const {
+            const Link<T> *x = head;
+
+            if (head) {
+                while (x != nullptr && x->val < key) {
+                    x = x->next;
+                }
+            }
+
+            return (x && x->val == key) ? x : nullptr;
+        }
+
+        void push_back(Link<T> *n) {
+            if (!n) {
+                return;
+            }
+
+            if (!head) {
+                head = n;
+                end = head;
+            }
+            else {
+                end->insert(n);
+                end = end->next;
+            }
+        }
+        void push_back(T n) {
+            if (!head) {
+                head = new Link<T>{n};
+                end = head;
+            }
+            else {
+                end->next = new Link<T>{n};
+                end = end->next;
+            }
+        }
+
+        ~Slink_list() {
+            Link<T> *p = head;
+
+            while (p) {
+                Link<T> *tmp = p->next;
+
+                delete p;
+
+                p = tmp;
+            }
+
+            head = nullptr;
+            end = nullptr;
+        }
     private:
-        Link *head;
-        Link *end;
+        Link<T> *head;
+        Link<T> *end;
     };
 
     // Skip node class for Skip list algorithm
@@ -244,8 +321,6 @@ namespace List_h
 
         // Generating random level for Skip Nodes
         size_t random_lvl() {
-            extern int coin_flip();
-
             size_t lvl = 1;
 
             while (lvl < max_lvl && coin_flip()) {
@@ -260,5 +335,19 @@ namespace List_h
     };
 
     // Printing whole skip list
-    void print_link(const Slink_list& l);
+    template <typename T>
+    void print_link(const Slink_list<T>& l) {
+        const Link<T> *p = l.get_head();
+
+        while (p) {
+            std::cout << p->val;
+            if (p->next) {
+                std::cout << " -> ";
+            }
+
+            p = p->next;
+        }
+        std::cout << std::endl;
+    }
 } // List_h
+
