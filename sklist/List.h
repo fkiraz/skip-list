@@ -76,7 +76,7 @@ namespace List_h
             return (x && x->val == key) ? x : nullptr;
         }
 
-        void push_back(Link<T> *n) {
+        void push_back(Link<T> *const n) {
             if (!n) {
                 return;
             }
