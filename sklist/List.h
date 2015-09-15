@@ -35,18 +35,20 @@ namespace List_h
     // Singly linked list class
     template <typename T>
     struct Slink_list {
-        Slink_list() : head{nullptr}, end{head} {};
+        Slink_list() : head{nullptr}, end{head}, sz{0} {};
         // Create linked list by passing a list of values like {1,2,3} : 1 -> 2 -> 3
-        Slink_list(std::initializer_list<int> l) {
+        Slink_list(std::initializer_list<T> l) : sz{0} {
             auto it = l.begin();
 
             head = new Link<T>{*it++};
             end = head;
+            ++sz;
 
             while (it != l.end()) {
                 end->insert(new Link<T>{*it});
                 end = end->next;
                 ++it;
+                ++sz;
             }
         }
 
@@ -54,11 +56,19 @@ namespace List_h
             return head;
         }
 
-        const Link<T> *find(int key) const {
+        const Link<T> *get_end() const {
+            return end;
+        }
+
+        const size_t size() const {
+            return sz;
+        }
+
+        const Link<T> *find(const T& key) const {
             const Link<T> *x = head;
 
             if (head) {
-                while (x != nullptr && x->val < key) {
+                while (x != nullptr && x->val != key) {
                     x = x->next;
                 }
             }
@@ -66,7 +76,7 @@ namespace List_h
             return (x && x->val == key) ? x : nullptr;
         }
 
-        void push_back(Link<T> *n) {
+        void push_back(Link<T> *const n) {
             if (!n) {
                 return;
             }
@@ -108,6 +118,7 @@ namespace List_h
     private:
         Link<T> *head;
         Link<T> *end;
+        size_t sz;
     };
 
     // Skip node class for Skip list algorithm
@@ -119,13 +130,14 @@ namespace List_h
     //
     template <typename T>
     struct Skip_node {
-        Skip_node(int k, T v, size_t levels) : key{k}, val{v}, levels{levels}, next{new Skip_node<T> *[levels]}, prev{new Skip_node<T> *[levels]} {
+        Skip_node(int k, T v, size_t levels) : key{k}, val{v}, levels{levels}, next{new Skip_node<T> *[levels]}, prev{new Skip_node<T> *[levels]} 
+        {
             for (size_t i = 0; i < levels; ++i) {
                 next[i] = nullptr;
                 prev[i] = nullptr;
             }
         }
-        
+
         ~Skip_node() {
             delete[] next;
             delete[] prev;
@@ -265,7 +277,7 @@ namespace List_h
             }
         }
 
-        bool search(int key) {
+        bool search(int key) const {
             const Skip_node<T> *x = head;
 
             for (auto i = max_lvl - 1; i >= 0 && i < max_lvl; --i) {
@@ -350,4 +362,3 @@ namespace List_h
         std::cout << std::endl;
     }
 } // List_h
-
