@@ -1,6 +1,4 @@
 #include <vector>
-#include <initializer_list>
-#include <algorithm>
 #include <random>
 #include <iostream>
 #include <ctime>
@@ -10,10 +8,10 @@ using namespace std;
 using namespace List_h;
 
 void foo() {
-    Skip_list ll;
+    Skip_list<int> ll;
 
     for (auto i = -50; i < 50000; ++i) {
-        ll.push_back(i);
+        ll.push_back(i, i);
     }
 
     ll.display();
@@ -21,11 +19,11 @@ void foo() {
 
 int main() {
     constexpr int border = 8000000;
-    Skip_list sl;
-    Slink_list sll;    
+    Skip_list<int> sl;
+    Slink_list<int> sll;    
 
     for (auto i = 0; i < border; ++i) {
-        sl.push_back(i);
+        sl.push_back(i, i);
         sll.push_back(i);
     }
 
@@ -38,13 +36,6 @@ int main() {
 
         t = clock();
 
-        /*if (sl.search(val)) {
-            std::cout << val << " was found" << std::endl;
-        }
-        else {
-            std::cout << val << " was not found" << std::endl;
-        }*/
-
         bool vt = sl.search(val);
 
         t = clock() - t;
@@ -53,7 +44,7 @@ int main() {
 
         t = clock();
 
-        const Link *p = sll.find(val);
+        const Link<int> *p = sll.find(val);
 
         t = clock() - t;
 

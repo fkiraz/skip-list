@@ -190,8 +190,8 @@ namespace List_h
         }
 
         void delete_node(int key) {
-            Skip_node *update[max_lvl];
-            Skip_node *x = head;
+            Skip_node<T> *update[max_lvl];
+            Skip_node<T> *x = head;
 
             for (auto i = max_lvl - 1; i >= 0 && i < max_lvl; --i) {
                 while (x->next[i]->key < key) {
